@@ -27,9 +27,14 @@
         }
         return query
       }
+      function absoluteURL(rel) {
+        var a = document.createElement('a')
+        a.href = rel
+        return a.href
+      }
 
       var query = parseQuery(document.location.search)
-      var src = query.src
+      var src = absoluteURL(query.src)
 
       var base = document.createElement('base')
       base.href = src
