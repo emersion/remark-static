@@ -29,8 +29,15 @@
       }
 
       var query = parseQuery(document.location.search)
-      var slideshow = remark.create({
-      	sourceUrl: query.src
+      var src = query.src
+
+      var base = document.createElement('base')
+      base.href = src
+      document.head.appendChild(base)
+
+      var slideshow = remark.create({ sourceUrl: src })
+      slideshow.on('slidesChanged', function() {
+        document.querySelector('title').textContent = document.querySelector('h1').textContent
       })
     </script>
   </body>
