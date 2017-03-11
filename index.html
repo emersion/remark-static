@@ -33,7 +33,18 @@
         return a.href
       }
 
-      var query = parseQuery(document.location.search)
+      var originalLocation = window.location.pathname + window.location.search
+      if (typeof window.history.replaceState === 'function') {
+        var originalReplaceState = window.history.replaceState.bind(window.history)
+        window.history.replaceState = function(state, title, url) {
+          return originalReplaceState(state, title, originalLocation+url)
+        }
+      }
+
+      var query = parseQuery(window.location.search)
+      if (!query.src) {
+        throw new Error('No source specified')
+      }
       var src = absoluteURL(query.src)
 
       var base = document.createElement('base')
